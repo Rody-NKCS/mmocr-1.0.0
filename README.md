@@ -1,5 +1,7 @@
 # mmocr-1.0.0
 
+[mmocr-1.0.0](https://github.com/open-mmlab/mmocr/tree/v1.0.0).
+
 ## /train/start
 1. 数据格式转换：mmocr有一套独立的数据组织格式，因此需要将网页上标注的数据格式转换为mmocr格式，该函数已写进train/start中，只要数据集在路径下，启动训练后即进行数据集格式转换。数据集转换函数在trainNet.py中，为coco2mmocr100,此外，还需要为检测模型和识别模型准备配置文件，定义在trainNet.py的prepareConfig函数中。
 
@@ -19,6 +21,9 @@
 
 9. 当前epoch, loss, 以及检测识别模型的几个指标都在训练或验证过程中写入status.json中，在mmengine训练和验证过程中直接写入json，源码位置/home/jushi/anaconda3/envs/testV04/lib/python3.7/site-packages/mmengine/runner/loops.py。
 
+## /train/stop
+停止训练模型，根据projectID，kill为该项目训练分配的pid
+
 ## /test/start
 1. 将test过程中的状态保存在status_test.json下，记录测试图片进度，总图片数以及状态。
 
@@ -26,7 +31,10 @@
 
 3. 采用one by one的方式测试，即一张图片先检测后识别，结果保存在testResult.json中。
 
-## status
+## /test/stop
+停止测试模型，根据projectID，kill为该项目测试分配的pid
+
+## /status
 1. 返回状态，在训练过程中，status.json中保存的状态如下：
    ```
    "status": "成功", #当前状态，有：成功，失败，训练检测模型中，检测模型训练完毕，验证检测模型中，检测模型验证完毕，训练识别模型中，识别模型训练完毕，验证识别模型中，识别模型识别完毕
@@ -56,10 +64,16 @@
 
 2. type=testResult: 检查是否测试完成并保存为testResult.json。返回testResult.json的大小
 
+## /test/checkFile
+检测测试是否完成。返回testResult.json的大小
+
 ## /train/download
 1. downloadType=model 下载训练完的模型
 
 2. downloadType=testResult，下载测试后的结果testResult.json
+
+##/test/download
+下载测试后的结果testResult.json
 
 ## getEpoch
 该函数的作用是从模型训练的log文件中读取当前的epoch, loss, 后来直接从mmengine的源码中读取，这个函数就没用了。
