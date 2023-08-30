@@ -2,7 +2,7 @@
 
 [mmocr-1.0.0](https://github.com/open-mmlab/mmocr/tree/v1.0.0).
 
-# 接口，app.py
+# 接口(app.py)
 /mnt/sdb/jushi/ai/mmocr/mmocr-1.0.0/OcrDemo/app.py
 ## /train/start
 1. 数据格式转换：mmocr有一套独立的数据组织格式，因此需要将网页上标注的数据格式转换为mmocr格式，该函数已写进train/start中，只要数据集在路径下，启动训练后即进行数据集格式转换。数据集转换函数在trainNet.py中，为coco2mmocr100,此外，还需要为检测模型和识别模型准备配置文件，定义在trainNet.py的prepareConfig函数中。
