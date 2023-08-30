@@ -78,5 +78,7 @@
 下载测试后的结果testResult.json
 
 ## getEpoch
-该函数的作用是从模型训练的log文件中读取当前的epoch, loss, 后来直接从mmengine的源码中读取，这个函数就没用了。
+1. 该函数的作用是从模型训练的log文件中读取当前的epoch, loss, 后来直接从mmengine的源码中读取，这个函数就没用了。
+
+2. 改变了mmengine为log文件命名的方式，统一命名为log/record.log。原来是以当前时间作为文件名。
    
