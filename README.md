@@ -74,7 +74,7 @@
 
 2. downloadType=testResult，下载测试后的结果testResult.json
 
-##/test/download
+## /test/download
 下载测试后的结果testResult.json
 
 ## getEpoch
