@@ -26,7 +26,7 @@
 10. runTest==1时, 会在训练完成后立即测试, 此时需要测试集图片在训练模型路径下, 会启动测试. 与/test/start/接口处理方式相同, 会在路径下写入status_test.json, 记录当前测试图片进度, 总图片数以及状态.
 
 ## /train/stop
-停止训练模型，根据projectID，kill为该项目训练分配的pid
+停止训练模型，根据projectID, kill为该项目训练分配的pid
 
 ## /test/start
 1. 将test过程中的状态保存在status_test.json下, 记录测试图片进度(testImage), 总图片数(totalTestImage)以及状态.
