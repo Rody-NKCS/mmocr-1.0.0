@@ -21,7 +21,7 @@
 
 8. 和轩哥交流，在前端展示三个指标，检测模型两个：precision和recall，识别模型一个：char_precision。但在status接口以及status report中，指标全部传回，方便以后改进。
 
-9. 当前epoch, loss, 以及检测识别模型的几个指标都在训练或验证过程中写入status.json中，在mmengine训练和验证过程中直接写入json，源码位置/home/jushi/anaconda3/envs/testV04/lib/python3.7/site-packages/mmengine/runner/loops.py。
+9. 当前epoch, loss, 以及检测识别模型的几个指标都在训练或验证过程中写入status.json中，在mmengine训练和验证过程中直接写入json，写入源码位置/home/jushi/anaconda3/envs/testV04/lib/python3.7/site-packages/mmengine/runner/loops.py。
 
 ## /train/stop
 停止训练模型，根据projectID，kill为该项目训练分配的pid
@@ -80,5 +80,5 @@
 ## getEpoch
 1. 该函数的作用是从模型训练的log文件中读取当前的epoch, loss, 后来直接从mmengine的源码中读取，这个函数就没用了。
 
-2. 改变了mmengine为log文件命名的方式，统一命名为log/record.log。原来是以当前时间作为文件名。
+2. 改变了mmengine为log文件命名的方式，统一命名为log/record.log。原来是以当前时间作为文件名。修改源码位置：/home/jushi/anaconda3/envs/testV04/lib/python3.7/site-packages/mmengine/runner/runner.py
    
