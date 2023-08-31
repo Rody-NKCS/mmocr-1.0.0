@@ -19,9 +19,11 @@
 
 7. 识别模型验证指标：word_acc, word_acc_ignore_case, word_acc_ignore_symbol, char_recall, char_precision. 具体解释见[mmocr](https://github.com/open-mmlab/mmocr/blob/main/docs/zh_cn/basic_concepts/evaluation.md).
 
-8. 和轩哥交流，在前端展示三个指标，检测模型两个：precision和recall，识别模型一个：char_precision。但在status接口以及status report中，指标全部传回，方便以后改进。
+8. 和轩哥交流，在前端展示三个指标，检测模型两个：precision和recall，识别模型一个：char_precision。但在status接口以及status report中，上述8个指标全部传回，方便以后在前端改进。
 
-9. 当前epoch, loss, 以及检测识别模型的几个指标都在训练或验证过程中写入status.json中，在mmengine训练和验证过程中直接写入json，写入源码位置/home/jushi/anaconda3/envs/testV04/lib/python3.7/site-packages/mmengine/runner/loops.py。
+9. 当前epoch, loss, 以及检测识别模型的几个指标都在训练或验证过程中直接写入status.json中，在mmengine训练和验证过程中直接写入json，写入源码位置/home/jushi/anaconda3/envs/testV04/lib/python3.7/site-packages/mmengine/runner/loops.py。
+
+10. runTest==1时，会在训练完成后立即测试，此时需要测试集图片在训练模型路径下，会启动测试。与/test/start/接口处理方式相同，会在路径下写入status_test.json，记录当前测试图片进度，总图片数以及状态。
 
 ## /train/stop
 停止训练模型，根据projectID，kill为该项目训练分配的pid
