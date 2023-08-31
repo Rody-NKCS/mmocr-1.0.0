@@ -5,13 +5,13 @@
 # 接口(app.py)
 /mnt/sdb/jushi/ai/mmocr/mmocr-1.0.0/OcrDemo/app.py
 ## /train/start
-1. 数据格式转换：mmocr有一套独立的数据组织格式，因此需要将网页上标注的数据格式转换为mmocr格式，该函数已写进train/start中，只要数据集在路径下，启动训练后即进行数据集格式转换。数据集转换函数在trainNet.py中，为coco2mmocr100,此外，还需要为检测模型和识别模型准备配置文件，定义在trainNet.py的prepareConfig函数中。
+1. 数据格式转换：mmocr有一套独立的数据组织格式，因此需要将网页上标注的数据格式转换为mmocr格式，该函数已写进train/start中，只要数据集在路径下，启动训练后即进行数据集格式转换。数据集转换函数在trainNet.py中，为coco2mmocr100,此外，还需要为检测模型和识别模型准备配置文件，定义在trainNet.py的prepareConfig函数中。trainNet.py路径/mnt/sdb/jushi/ai/mmocr/mmocr-1.0.0/tools/trainNet.py
 
-2. 先训练检测模型，训练50个epoch,batch size为4，修改epoch，batch size在/mnt/sdb/jushi/ai/mmocr/mmocr-1.0.0/configs/textdet/dbnet/db_res50_XY.py
+2. 先训练检测模型，训练50个epoch,batch size为4，修改epoch，batch size在/mnt/sdb/jushi/ai/mmocr/mmocr-1.0.0/configs/textdet/dbnet/db_res50_XY.py。如果修改batch_size需要在loops.py(/home/jushi/anaconda3/envs/testV04/lib/python3.7/site-packages/mmengine/runner/loops.py)第146行将batch_size=4改掉。
 
-3. 后训练识别模型，训练20个epoch，观察到识别模型在信云ocr数据集上一般10个epoch左右loss收敛为0，batch size为128，修改epoch,batch size的路径为/mnt/sdb/jushi/ai/mmocr/mmocr-1.0.0/configs/textrecog/satrn/satrn_shallow-small_XY.py
+3. 后训练识别模型，训练20个epoch，观察到识别模型在信云ocr数据集上一般10个epoch左右loss收敛为0，batch size为128，修改epoch,batch size的路径为/mnt/sdb/jushi/ai/mmocr/mmocr-1.0.0/configs/textrecog/satrn/satrn_shallow-small_XY.py。如果修改batch_size将loops.py第159行batch_size=128改掉。
 
-4. 每训练5个epoch会对模型进行验证，验证的指标保存在status.json中，当前epoch，损失函数以及最大迭代次数，当前处理图片数以及总图片数等都会保存到status.json中。每一次重新训练，status.json都会重写。这样做的好处是方便status函数访问状态时返回当前进度和状态。
+4. 为了避免在服务器上保存太多的checkpoints，每训练5个epoch会对模型进行验证并保存当前的.pth，要求将总迭代次数设为5的倍数。验证的指标保存在status.json中，当前epoch(det_epoch,rec_epoch)，损失函数(det_loss,rec_loss)以及最大迭代次数(det_totalEpoch,rec_totalEpoch)，当前处理图片数(detimageProgress,recimageProgress)以及总图片数(TotalTrainDetImageList,TotalTrainRecImageList)等都会保存到status.json中。每一次重新训练，status.json都会重写。这样做的好处是方便status函数访问状态时返回当前进度和状态。
 
 5. 训练完成后，模型以及配置文件会保存在model/pthModel.zip中。
 
@@ -29,7 +29,7 @@
 停止训练模型，根据projectID，kill为该项目训练分配的pid
 
 ## /test/start
-1. 将test过程中的状态保存在status_test.json下，记录测试图片进度，总图片数以及状态。
+1. 将test过程中的状态保存在status_test.json下，记录测试图片进度(testImage)，总图片数(totalTestImage)以及状态。
 
 2. 加载checkpoints时读取train过程的status.json，从该json中得到最大迭代次数，然后直接加载最大迭代次数的模型，因此必须训练成功后再测试，不然加载不了模型。
 
@@ -69,7 +69,7 @@
 2. type=testResult: 检查是否测试完成并保存为testResult.json。返回testResult.json的大小
 
 ## /test/checkFile
-检测测试是否完成。返回testResult.json的大小
+检查测试是否完成。返回testResult.json的大小
 
 ## /train/download
 1. downloadType=model 下载训练完的模型
