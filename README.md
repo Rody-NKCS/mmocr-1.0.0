@@ -5,9 +5,9 @@
 # 接口(app.py)
 /mnt/sdb/jushi/ai/mmocr/mmocr-1.0.0/OcrDemo/app.py
 ## /train/start
-1. 数据格式转换：mmocr有一套独立的数据组织格式， 因此需要将网页上标注的数据格式转换为mmocr格式， 该函数已写进train/start中， 只要数据集在路径下， 启动训练后即进行数据集格式转换。 数据集转换函数在trainNet.py中， 为coco2mmocr100， 此外， 还需要为检测模型和识别模型准备配置文件， 定义在trainNet.py的prepareConfig函数中。 trainNet.py路径/mnt/sdb/jushi/ai/mmocr/mmocr-1.0.0/tools/trainNet.py。
+1. 数据格式转换：mmocr有一套独立的数据组织格式， 因此需要将网页上标注的数据格式转换为mmocr格式， 该函数已写进train/start中， 只要数据集在路径下， 启动训练后即进行数据集格式转换。 数据集转换函数在trainNet.py中， 为coco2mmocr100， 此外， 还需要为检测模型和识别模型准备配置文件， 定义在trainNet.py的prepareConfig函数中，这一步在启动训练后进行。 trainNet.py路径/mnt/sdb/jushi/ai/mmocr/mmocr-1.0.0/tools/trainNet.py。
 
-2. 先训练检测模型， 训练50个epoch,batch size为4， 修改epoch，batch size在/mnt/sdb/jushi/ai/mmocr/mmocr-1.0.0/configs/textdet/dbnet/db_res50_XY.py。 如果修改batch_size需要在loops.py(/home/jushi/anaconda3/envs/testV04/lib/python3.7/site-packages/mmengine/runner/loops.py)第146行将batch_size=4改掉。
+2. 先训练检测模型， 训练50个epoch,batch size为4， 修改epoch，batch size在/mnt/sdb/jushi/ai/mmocr/mmocr-1.0.0/configs/textdet/dbnet/db_res50_XY.py。 如果修改batch_size需要在loops.py(/home/jushi/anaconda3/envs/testV04/lib/python3.7/site-packages/mmengine/runner/loops.py)第146行将batch_size=4改掉。解释：loops.py中新加入了功能：将当前处理图片数写入status.json，当前处理图片数的计算需要用到batch_size，此时需要手动修改batch_size(识别模型类似)。
 
 3. 后训练识别模型， 训练20个epoch， 观察到识别模型在信云ocr数据集上一般10个epoch左右loss收敛为0， batch size为128， 修改epoch,batch size的路径为/mnt/sdb/jushi/ai/mmocr/mmocr-1.0.0/configs/textrecog/satrn/satrn_shallow-small_XY.py。 如果修改batch_size将loops.py第159行batch_size=128改掉。
 
