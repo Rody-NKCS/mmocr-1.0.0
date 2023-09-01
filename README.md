@@ -5,7 +5,7 @@
 # 接口(app.py)
 /mnt/sdb/jushi/ai/mmocr/mmocr-1.0.0/OcrDemo/app.py
 ## /train/start
-1. 数据格式转换：mmocr有一套独立的数据组织格式， 因此需要将网页上标注的数据格式转换为mmocr格式， 该函数已写进train/start中， 只要数据集在路径下， 启动训练后即进行数据集格式转换。 数据集转换函数在trainNet.py中， 为coco2mmocr100， 此外， 还需要为检测模型和识别模型准备配置文件， 定义在trainNet.py的prepareConfig函数中，这一步在启动训练后进行。 trainNet.py路径/mnt/sdb/jushi/ai/mmocr/mmocr-1.0.0/tools/trainNet.py。
+1. 数据格式转换：mmocr有一套独立的数据组织格式， 因此需要将网页上标注的数据格式转换为mmocr格式， 该函数已写进train/start中， 只要数据集在路径下， 启动训练后即进行数据集格式转换。 数据集转换函数在trainNet.py中， 为coco2mmocr100， 此外， 还需要为检测模型和识别模型准备配置文件， 定义在trainNet.py的prepareConfig函数中，这一步在数据集转换后进行。 trainNet.py路径/mnt/sdb/jushi/ai/mmocr/mmocr-1.0.0/tools/trainNet.py。
 
 2. 先训练检测模型， 训练50个epoch,batch size为4， 修改epoch，batch size在/mnt/sdb/jushi/ai/mmocr/mmocr-1.0.0/configs/textdet/dbnet/db_res50_XY.py。 如果修改batch_size需要在loops.py(/home/jushi/anaconda3/envs/testV04/lib/python3.7/site-packages/mmengine/runner/loops.py)第146行将batch_size=4改掉。解释：loops.py中新加入了功能：将当前处理图片数写入status.json，当前处理图片数的计算需要用到batch_size，此时需要手动修改batch_size(识别模型类似)。
 
@@ -62,6 +62,15 @@
     "char_precision": 1.0
    ```
 2. status接口的参数基本都是从status.json或status_test.json中得到。
+
+3. 该接口访问时不需要传入参数，因此该接口内的路径都是绝对路径:
+   ```
+   trainPath='/mnt/sdb/mchn-vsn-cloud/train/'
+   status_filename=os.path.join(trainPath,projectID,trainID,'status.json')
+   testPath='/mnt/sdb/mchn-vsn-cloud/test/'
+   status_test_filename=os.path.join(testPath,projectID,testID,'status_test.json')
+   ```
+   在上线后，数据集在'/mnt/sdb/mchn-vsn-cloud/train/'下。没上线前如果需要训练，只需要在status接口内将路径改成新数据集的路径即可（见函数中已经被注释的路径）。
 
 ## /train/checkFile
 1. type=model:检查模型是否训练完成并保存在model/pthModel.zip中. 返回pthModel.zip的大小。
